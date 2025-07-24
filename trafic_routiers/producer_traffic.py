@@ -21,10 +21,10 @@ for _, row in df.iterrows():
         "day": row["Day"],
         "user_id": row["user_id"]
     }
-    print("📤 Envoi :", message)
+    print("Envoi :", message)
     producer.send("activity_data", value=message)
     time.sleep(1)  # ajuste si besoin
 
 producer.flush()
 producer.close()
-print("✅ Fin de l’envoi Kafka")
+print("Fin de l’envoi Kafka")
