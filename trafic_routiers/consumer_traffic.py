@@ -5,13 +5,12 @@ import json
 # Config BigQuery
 import os
 
-# Spécifie le chemin vers ton fichier de service account
+# Spécifie le chemin vers le fichier de service account
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "gcp-service-account.json"
 
-# Maintenant tu peux instancier le client
 client = bigquery.Client()
 
-table_id = "air-pollution-pipeline.pollution_dataset.activity_data"  # adapte ça
+table_id = "air-pollution-pipeline.pollution_dataset.activity_data"
 
 # Kafka Consumer config
 consumer = KafkaConsumer(
@@ -23,15 +22,15 @@ consumer = KafkaConsumer(
     group_id='activity-consumer-group'
 )
 
-print("🟢 En écoute sur le topic 'activity_data'...")
+print("En écoute sur le topic 'activity_data'...")
 
 for message in consumer:
     row = message.value
-    print("📥 Reçu :", row)
+    print(" Reçu :", row)
 
     # Envoi BigQuery
     errors = client.insert_rows_json(table_id, [row])
     if errors == []:
-        print("✅ Inséré avec succès")
+        print("Inséré avec succès")
     else:
-        print("❌ Erreurs :", errors)
+        print("Erreurs :", errors)
